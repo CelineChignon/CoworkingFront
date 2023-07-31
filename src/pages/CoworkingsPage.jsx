@@ -33,8 +33,8 @@ const CoworkingsPage = () => {
                 <div key={coworking.id}>
                     <h2>{coworking.name}</h2>
                     <p>
-                        Adresse :{coworking.address.number}
-                        {coworking.address.street} -
+                        Address :{coworking.address.number}  {` `}
+                        {coworking.address.street} -{` `}
                         {coworking.address.postcode}
                         {coworking.address.city}
 
