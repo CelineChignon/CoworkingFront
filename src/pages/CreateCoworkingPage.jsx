@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const CreateCoworkingPage = () => {
@@ -36,7 +37,9 @@ const CreateCoworkingPage = () => {
             },
 
         };
-        console.log(coworkingData)
+        // je créer une variable pour stocker le cookies et si l'utilisateur est connecté, Authorization (rajouté dans headers) va verifier que le cookie du navigateur a bien un token valide 
+        const token = Cookies.get("jwt");
+
         //méthode Post pour effectuer des requêtes de création vers l'api, on renvoit dans le body les valeurs récuperées dans coworkingData
         //la requête s'effectue sous le format JSON
         const responseCreate = await fetch("http://localhost:3010/api/coworkings", {
@@ -44,10 +47,11 @@ const CreateCoworkingPage = () => {
             body: JSON.stringify(coworkingData),
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
         });
         const responseCreateJson = responseCreate.json()
-        navigate("/coworkings");
+        navigate("/admin/coworkings");
     }
     // Utilisation de navigate pour rediriger l'utilisateur sur la liste des coworkings après rajout de la création
     return (
@@ -62,7 +66,7 @@ const CreateCoworkingPage = () => {
                 <input type="number" name="superficy" />
             </div>
             <div>
-                <label htmlFor="capacity">capacity</label>
+                <label htmlFor="capacity">Capacity</label>
                 <input type="number" name="capacity" />
             </div>
             <div>
