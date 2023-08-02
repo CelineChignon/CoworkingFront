@@ -1,11 +1,9 @@
 import Cookies from "js-cookie";
-import { Link, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-const HeaderAdmin = () => {
+import { Link, useNavigate } from "react-router-dom";
 
+const HeaderPublic = () => {
     const navigate = useNavigate()
-
-    // rajout d'un onclick sur le lien se deconnecter pour vider les cookies et renvoyer vers la page de connexion
     const handleGetout = () => {
         Cookies.remove("jwt");
         navigate("/login")
@@ -13,8 +11,6 @@ const HeaderAdmin = () => {
     const jwt = Cookies.get("jwt")
     const decodeUser = jwtDecode(jwt);
     console.log(decodeUser)
-    // je rajoute une variable qui lit le cookies utiliser par le navigateur, ensuite je rajoute une variable qui utilise la librairie jwtDecode qui sert à décripter le token du username cela renvoit un objet avec le username 
-
     return (
         <header className="containerHeader">
             <nav className="containerNavbar">
@@ -22,12 +18,7 @@ const HeaderAdmin = () => {
                     <li>
                         <Link to={"/"}>Accueil</Link>
                     </li>
-                    <li>
-                        <Link to={"/admin/coworkings"}>Liste des coworkings</Link>
-                    </li>
-                    <li>
-                        <Link to={"/admin/coworkings/create"}>Ajouter un coworking</Link>
-                    </li>
+
                     <li>
                         <p >Vous connectez en tant que : {decodeUser.data.username} </p>
                     </li>
@@ -36,8 +27,7 @@ const HeaderAdmin = () => {
                     </li>
                 </ul>
             </nav>
-        </header>
-    );
+        </header>);
 };
 
-export default HeaderAdmin;
+export default HeaderPublic;

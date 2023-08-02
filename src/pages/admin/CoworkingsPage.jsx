@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderAdmin from "../../components/admin/HeaderAdmin";
@@ -15,9 +16,24 @@ const CoworkingsPage = () => {
     }
     //Je passe la variable deleteCoworkingMessage dans la fonction useEffect, à chaque utilisation de cette variable par un utilisateur la liste des coworkings sera mise à jour
     useEffect(() => {
-        if (!Cookies.get("jwt")) {
+        const jwt = Cookies.get("jwt");
+
+        // s'il existe pas, ça veut que l'utilisateur n'est pas connecté
+        // on le redirige vers la page de login
+        if (!jwt) {
             navigate("/login");
         }
+
+        // on décode le jwt
+        const user = jwtDecode(jwt);
+
+        // si l'utilisateur a le rôle user
+        // on le redirige vers l'accueil public
+        if (user.data.role === 1) {
+            navigate("/");
+        }
+
+
         fetchApiCoworkings();
     }, [deleteCoworkingMessage])
     // Rajout d'une condition, si les cookies jwt sont vident alors on redirige l'utlisateur vers la page de login 

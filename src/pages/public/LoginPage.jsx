@@ -31,7 +31,7 @@ const LoginPage = () => {
                 <input type="text" name="username" />
 
                 <label htmlFor="password">Password</label>
-                <input type="text" name="password" />
+                <input type="password" name="password" />
 
                 <button type="submit">Connexion</button>
             </form>
