@@ -5,7 +5,7 @@ const HomePage = () => {
     return (
         <>
             <HeaderPublic />
-            <p>Bienvenue sur notre site</p>;
+            <p>Bienvenue sur notre site</p>
 
         </>)
 };

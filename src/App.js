@@ -5,7 +5,8 @@ import HomePage from "./pages/public/HomePage";
 import LoginPage from "./pages/public/LoginPage";
 import UpdateCoworkingPage from "./pages/admin/UpdateCoworkingPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import CoworkingsPagePublic from "./pages/public/CoworkingPagePuclic";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
 
 
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/coworkings" element={<CoworkingsPagePublic />} />
       </Routes>
     </BrowserRouter>
   );

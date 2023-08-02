@@ -12,8 +12,13 @@ code {
     monospace;
 }
 
+.navbar {
+  background-color: darkgray;
+}
 
 
 
-
-
+.navbar-expand-lg .navbar-collapse {
+  display: flex!important;
+  flex-basis: auto;
+  justify-content: flex-end;}
