@@ -1,6 +1,8 @@
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import HeaderAdmin from "../../components/admin/HeaderAdmin";
+
 
 const UpdateCoworkingPage = () => {
     //const { id } = useParams()  sert à récupérer l'id de l'url
@@ -71,72 +73,80 @@ const UpdateCoworkingPage = () => {
         }
     }
     useEffect(() => {
+
+        if (!Cookies.get("jwt")) {
+            navigate("/login");
+        }
         fetchUpdateApi();
     }, []);
-
+    // Rajout d'une condition, si les cookies jwt sont vident alors on redirige l'utlisateur vers la page de login 
     return (
-        <form onSubmit={handleSubmitUpdate}>
-            <h1>Update a coworking </h1>
-            <p>Created the : {coworking && coworking.createdAt}</p>
+        <>
+            <HeaderAdmin />
+            <form onSubmit={handleSubmitUpdate}>
+                <h1>Update a coworking </h1>
+                <p>Created the : {coworking && coworking.createdAt}</p>
 
-            <div>
-                <label htmlFor="name">Name</label>
-                <input type="text" name="name" defaultValue={coworking && coworking.name} />
-            </div>
-            <div>
-                <label htmlFor="superficy">Superficy</label>
-                <input type="number" name="superficy" defaultValue={coworking && coworking.superficy} />
-            </div>
-            <div>
-                <label htmlFor="capacity">Capacity</label>
-                <input type="number" name="capacity" defaultValue={coworking && coworking.capacity} />
-            </div>
-            <div>
-                <h3>Price:</h3>
                 <div>
-                    <label htmlFor="price_hour">Price by hour</label>
-                    <input type="number" name="price_hour" defaultValue={coworking && coworking.price.hour} />
+                    <label htmlFor="name">Name</label>
+                    <input type="text" name="name" defaultValue={coworking && coworking.name} />
+                </div>
+                <div>
+                    <label htmlFor="superficy">Superficy</label>
+                    <input type="number" name="superficy" defaultValue={coworking && coworking.superficy} />
+                </div>
+                <div>
+                    <label htmlFor="capacity">Capacity</label>
+                    <input type="number" name="capacity" defaultValue={coworking && coworking.capacity} />
+                </div>
+                <div>
+                    <h3>Price:</h3>
+                    <div>
+                        <label htmlFor="price_hour">Price by hour</label>
+                        <input type="number" name="price_hour" defaultValue={coworking && coworking.price.hour} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="price_day">Price by day</label>
+                        <input type="number" name="price_day" defaultValue={coworking && coworking.price.day} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="price_month">Price by month</label>
+                        <input type="number" name="price_month" defaultValue={coworking && coworking.price.month} />
+                    </div>
                 </div>
 
                 <div>
-                    <label htmlFor="price_day">Price by day</label>
-                    <input type="number" name="price_day" defaultValue={coworking && coworking.price.day} />
+                    <h3>Address:</h3>
+                    <div>
+                        <label htmlFor="address_number">Address number</label>
+                        <input type="text" name="address_number" defaultValue={coworking && coworking.address.number} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="address_street">Address street</label>
+                        <input type="text" name="address_street" defaultValue={coworking && coworking.address.street} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="address_postcode">Address zipcode</label>
+                        <input type="number" name="address_postcode" defaultValue={coworking && coworking.address.postCode} />
+                    </div>
+
+                    <div>
+                        <label htmlFor="address_city">Address city</label>
+                        <input type="text" name="address_city" defaultValue={coworking && coworking.address.city} />
+                    </div>
+
+
                 </div>
-
-                <div>
-                    <label htmlFor="price_month">Price by month</label>
-                    <input type="number" name="price_month" defaultValue={coworking && coworking.price.month} />
-                </div>
-            </div>
-
-            <div>
-                <h3>Address:</h3>
-                <div>
-                    <label htmlFor="address_number">Address number</label>
-                    <input type="text" name="address_number" defaultValue={coworking && coworking.address.number} />
-                </div>
-
-                <div>
-                    <label htmlFor="address_street">Address street</label>
-                    <input type="text" name="address_street" defaultValue={coworking && coworking.address.street} />
-                </div>
-
-                <div>
-                    <label htmlFor="address_postcode">Address zipcode</label>
-                    <input type="number" name="address_postcode" defaultValue={coworking && coworking.address.postCode} />
-                </div>
-
-                <div>
-                    <label htmlFor="address_city">Address city</label>
-                    <input type="text" name="address_city" defaultValue={coworking && coworking.address.city} />
-                </div>
+                <p><button>Modifier</button></p>
 
 
-            </div>
-            <p><button>Modifier</button></p>
+            </form>
 
-
-        </form>
+        </>
     )
 
 };

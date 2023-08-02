@@ -1,6 +1,9 @@
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const navigate = useNavigate()
+
     const handleLogin = async (event) => {
         event.preventDefault();
 
@@ -18,6 +21,7 @@ const LoginPage = () => {
             const loginData = await repApiLogin.json();
             const jwt = loginData.data;
             Cookies.set("jwt", jwt);
+            navigate("/admin/");
         }
     }
     return (
