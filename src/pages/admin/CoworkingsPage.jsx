@@ -38,7 +38,7 @@ const CoworkingsPage = () => {
     }, [deleteCoworkingMessage])
     // Rajout d'une condition, si les cookies jwt sont vident alors on redirige l'utlisateur vers la page de login 
 
-    // je créer une variable pour stocker le cookies et si l'utilisateur est connecté, Authorization (rajouté dans headers) va verifier que le cookie du navigateur a bien un token valide 
+    //je créer une variable pour stocker le cookies si l'utilisateur est connecté, l'api va verifier que le cookie du navigateur a bien un token valide 
     const token = Cookies.get("jwt");
     //Je rajoute la méthode Delete, car un appel vers une api est automatiquement un GET donc pour indiquer à React se que je souhaite faire je rajoute une méthode.
     const handleDeleteCoworking = async (coworkingId) => {
@@ -57,7 +57,9 @@ const CoworkingsPage = () => {
 
         <div>
             <HeaderAdmin />
-            <h1>Liste de nos Coworkings:</h1>
+            <div className="headerBanniereAdmin">
+                <h1>Liste de nos Coworkings:</h1>
+            </div>
             {deleteCoworkingMessage && <p>{deleteCoworkingMessage}</p>}
             {coworkings.map((coworking) => (
                 <div key={coworking.id}>

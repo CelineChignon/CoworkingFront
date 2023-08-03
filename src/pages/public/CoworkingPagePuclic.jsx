@@ -1,65 +1,71 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
 import HeaderPublic from "../../components/public/HeaderPublic";
+
+
 const CoworkingsPagePublic = () => {
-    const navigate = useNavigate()
     const [coworkings, setCoworkings] = useState([])
-    const [deleteCoworkingMessage, setDeleteCoworkingMessage] = useState(null);
+
+    // cette variable est un booleen pour indiquer si un utilisateur et connecté ou pas
+    let isUserConnected = false;
+
+    // je créer une variable pour stocker le cookies si l'utilisateur est connecté, l'api va verifier que le cookie du navigateur a bien un token valide 
+    const jwt = Cookies.get("jwt");
+
+    //j'utilise decode pour décoder le cookie JWT si celui si est l'une des 3 roles alors isUserConnected et vrai et donc le formulaire est accessible sinon le formulaire est caché 
+    if (jwt) {
+        const decodedJwt = jwtDecode(jwt);
+        const role = decodedJwt.data.role;
+
+        if (role === 1 || role === 2 || role === 3) {
+            isUserConnected = true;
+        }
+    }
 
     const fetchApiCoworkings = async () => {
 
-        const repApiCoworkings = await fetch(`http://localhost:3010/api/coworkings?nosort=true`)
+        const repApiCoworkings = await fetch(`http://localhost:3010/api/coworkings`)
         const repApiCoworkingsJson = await repApiCoworkings.json()
         setCoworkings(repApiCoworkingsJson.data)
     }
-    //Je passe la variable deleteCoworkingMessage dans la fonction useEffect, à chaque utilisation de cette variable par un utilisateur la liste des coworkings sera mise à jour
+
     useEffect(() => {
-        const jwt = Cookies.get("jwt");
-
-        // s'il existe pas, ça veut que l'utilisateur n'est pas connecté
-        // on le redirige vers la page de login
-        if (!jwt) {
-            navigate("/login");
-        }
-
-        // on décode le jwt
-        const user = jwtDecode(jwt);
-
-        // si l'utilisateur a le rôle user
-        // on le redirige vers l'accueil public
-        if (user.data.role === 1) {
-            navigate("/");
-        }
-
-
         fetchApiCoworkings();
-    }, [deleteCoworkingMessage])
-    // Rajout d'une condition, si les cookies jwt sont vident alors on redirige l'utlisateur vers la page de login 
+    }, [])
 
-    // je créer une variable pour stocker le cookies et si l'utilisateur est connecté, Authorization (rajouté dans headers) va verifier que le cookie du navigateur a bien un token valide 
-    const token = Cookies.get("jwt");
-    //Je rajoute la méthode Delete, car un appel vers une api est automatiquement un GET donc pour indiquer à React se que je souhaite faire je rajoute une méthode.
-    const handleDeleteCoworking = async (coworkingId) => {
-        const repDeleteCoworking = await fetch(`http://localhost:3010/api/coworkings/${coworkingId}`, {
-            method: "DELETE",
+    const handleCreateReview = async (event, coworkingId) => {
+        event.preventDefault();
+
+        const content = event.target.content.value;
+        const rating = event.target.rating.value;
+
+        const reviewData = {
+            content: content,
+            rating: parseInt(rating)
+        }
+
+        const responseCreateReview = await fetch(`http://localhost:3010/api/reviews/${coworkingId}`, {
+            method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-        const repDeleteCoworkingJson = await repDeleteCoworking.json()
-        setDeleteCoworkingMessage(repDeleteCoworkingJson.message)
-    }
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+            body: JSON.stringify(reviewData),
+        });
 
+        const responseCreateReviewJson = await responseCreateReview.json();
+
+        console.log(responseCreateReviewJson)
+    }
 
     return (
 
         <div>
             <HeaderPublic />
-            <h1>Liste de nos Coworkings:</h1>
-            {deleteCoworkingMessage && <p>{deleteCoworkingMessage}</p>}
+            <div className="headerBanniere">
+                <h1>Liste de nos Coworkings:</h1>
+            </div>
             {coworkings.map((coworking) => (
                 <div key={coworking.id}>
                     <h2>{coworking.name}</h2>
@@ -70,12 +76,21 @@ const CoworkingsPagePublic = () => {
                         {coworking.address.city}
 
                     </p>
+                    {isUserConnected && (
+                        <form onSubmit={(event) => handleCreateReview(event, coworking.id)} action="review">
+                            <label htmlFor="content">Votre commentaire :</label>
+                            <textarea name="content" rows="4" cols="50"></textarea>
 
-                    <Link to={`/admin/coworkings/${coworking.id}/update`}>Mettre à jour le coworking</Link>
-                    <button onClick={() => handleDeleteCoworking(coworking.id)}>Supprimer le Coworking</button>
+                            <label htmlFor="rating">Votre note: </label>
+                            <input type="number" name="rating" min="0" max="5" />
+
+                            <p><input type="submit" /></p>
+                        </form>
+                    )}
                 </div>
             ))}
         </div>
+
     );
 };
 

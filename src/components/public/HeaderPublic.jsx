@@ -9,23 +9,47 @@ const HeaderPublic = () => {
         navigate("/login")
     }
     const jwt = Cookies.get("jwt")
-    const decodeUser = jwtDecode(jwt);
-    console.log(decodeUser)
+
+
+    let isUserConnected = false;
+
+    let decodedJwt = null
+
+
+    if (jwt) {
+        decodedJwt = jwtDecode(jwt);
+        const role = decodedJwt.data.role;
+
+        if (role === 1 || role === 2 || role === 3) {
+            isUserConnected = true;
+        }
+    }
     return (
 
-        <nav class="navbar navbar-expand-lg ">
-            <div class="container-fluid">
-                <Link class="navbar-brand" to={"/"}>Accueil</Link>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg ">
+            <div className="container-fluid">
+                <Link className="navbar-brand" to={"/"}>Accueil</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <p className="nav-link active">Bonjour : {decodeUser.data.username} </p>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link active" to={"/coworkings"}>Liste des coworkings</Link>
                         </li>
-                        <li class="nav-item">
-                            <a className="nav-link active" href="#" onClick={handleGetout}>Se déconnecter</a>
+                        {isUserConnected &&
+                            <>
+                                <li className="nav-item">
+                                    <p className="nav-link active">Bonjour : {decodedJwt.data.username} </p>
+                                </li>
+
+                                <li className="nav-item">
+                                    <a className="nav-link active" href="#" onClick={handleGetout}>Se déconnecter</a>
+                                </li>
+                            </>
+                        }
+                        <li>
+                            <Link className="nav-link active" to={"/login"}>Se connecter</Link>
                         </li>
                     </ul>
                 </div>

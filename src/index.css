@@ -19,6 +19,23 @@ code {
 
 
 .navbar-expand-lg .navbar-collapse {
-  display: flex!important;
+  margin-left: 5%;
   flex-basis: auto;
   justify-content: flex-end;}
+
+  /*Banniere*/
+  .headerBanniere 
+  {background-image: url(/public/img/hero-workin-0008.jpg);
+  background-size: cover;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  background-position: center;
+  padding: 150px 150px;}
+
+  .headerBanniereAdmin
+  {background-image: url(/public/img/Coworking.jpg);
+    background-size: cover;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background-position: center;
+    padding: 150px 150px;}

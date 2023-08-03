@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import HeaderPublic from "../../components/public/HeaderPublic";
 
 const LoginPage = () => {
     const navigate = useNavigate()
@@ -26,6 +27,7 @@ const LoginPage = () => {
     }
     return (
         <>
+            <HeaderPublic />
             <form onSubmit={handleLogin}>
                 <label htmlFor="username">Username</label>
                 <input type="text" name="username" />
